@@ -2,4 +2,4 @@
 PDF Parser  
 
 ### Get Started
- - Run `shell sh PdfParser.sh`
+ - Run ```sh PdfParser.sh```
