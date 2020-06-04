@@ -18,10 +18,6 @@ except:
     file = "/home/snowden/Documents/expenses-pagesti-pdf/1120-2012.pdf"
 
 
-# SECTION - LIST DES LIGNES qui casse les #!Couilles
-#! -> 175
-# -> l entete 
-
 
 
 # RETURN A DF object
