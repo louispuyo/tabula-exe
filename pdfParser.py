@@ -1,7 +1,7 @@
 import sys
 from tabula import errors
 from tabula.io import read_pdf, convert_into, convert_into_by_batch
-import csv
+import csv  
 from os import getenv
 import os
 import re
@@ -13,8 +13,8 @@ from datetime import date
 #file = getenv('file')
 
 file = sys.argv[1] 
-
-
+content = read_pdf(file, pages='all')
+print(content)
 
 
 
@@ -194,6 +194,9 @@ def extract():
     file_csv=f"{path}/temp/{foldername}/{File}.csv"
 
     try:
+        content = read_pdf(file, pages='all')
+        print(content)
+
         convert_into(file, f'{path}/temp/{foldername}/{File}.csv',output_format='csv', pages='all')
         #ParseData(file="/home/snowden/Programmation/Pagesti-Stage/tabula_exe/temp/04062020201926/1120-2012.csv")
                 
