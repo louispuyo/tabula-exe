@@ -11,11 +11,9 @@ from datetime import date
 
 #! file
 #file = getenv('file')
-try:
-    file = sys.argv[1] 
 
-except:
-    file = "/home/snowden/Documents/expenses-pagesti-pdf/1120-2012.pdf"
+file = sys.argv[1] 
+
 
 
 
@@ -173,7 +171,9 @@ def ParseData(file=file):
     return df.to_csv(file, header=False)
 
 
+
 def extract():
+    file = sys.argv[1]
     path = os.path.dirname(__file__)
     filename = os.path.basename(file)
     foldername = os.path.basename(os.path.dirname(file))
@@ -188,62 +188,28 @@ def extract():
 
 
 
-
-
     # Use splitext() to get filename and extension separately.
     (File, ext) = os.path.splitext(filename)
-    progress=open(f"{path}/temp/progress.txt", "a+")
+    progress=open(f"{path}/temp/{foldername}/progress.txt", "a+")
     file_csv=f"{path}/temp/{foldername}/{File}.csv"
 
     try:
-        print(file)
         convert_into(file, f'{path}/temp/{foldername}/{File}.csv',output_format='csv', pages='all')
-        clean_data = clean_data_csv(F=file_csv)
-        ParseData(file=f'{path}/temp/{foldername}/{File}.csv')
-        
+        #ParseData(file="/home/snowden/Programmation/Pagesti-Stage/tabula_exe/temp/04062020201926/1120-2012.csv")
+                
         # print('TOUS VA BIEN')
                  
     except:
-        with open(f"{path}/temp/progress.txt", "a") as myfile:
+        with open(f"{path}/temp/{foldername}/progress.txt", "a") as myfile:
             myfile.write(f"{File}=2,")
-        print("C EST LA MERDE!", f"{path}/temp/{foldername}/{File}.csv")
+            print("C EST LA MERDE!", f"{path}/temp/{foldername}/{File}.csv")
     else:
-        with open(f"{path}/temp/progress.txt", "a") as myfile:
+        with open(f"{path}/temp/{foldername}/progress.txt", "a") as myfile:
             myfile.write(f"{File}=1,")
     
-# FIXME 
-# uncomment below
+
+
+
+# / MAIN  
 extract()
-
-
-# TRASH ZONE
-
-
-    #     if not Isempty(regex_Tva): 
-    #         if not Condition_bt({"a":regex_Amount, "b":regex_Tva}):
-    #             temp = regex_Amount
-    #             regex_Amount = regex_Tva
-    #             regex_Tva = temp
-    #         else:
-    #             df_Amount += regex_Amount
-    #             df_Tva += regex_Tva
-               
-    #     else:
-    #         df_Amount += regex_Amount
-    #         df_Tva += regex_Tva
-          
-
-    #     if regex_Amount == '000':
-    #         df_Compte += regex_Amount[0]
-    #     else:
-    #         print(f'missed the {index} value {regex_Amount} < {regex_Tva}')
-    # #     print(df.loc[i])
-    
-
-    #   # BIGGER THAN
-    # def Condition_bt(tools:dict)->bool:
-    #     ''' @help RESPECT the syntaxe:
-    #     {"a":'<VALUE_A>', "b":<VALUE_B>}
-    #     '''
-    #     print(len(tools["a"]))
-    #     return len([i for i in tools["a"]]) > len([i for i in tools["b"]])
+ParseData()
