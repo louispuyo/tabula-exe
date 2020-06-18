@@ -11,12 +11,18 @@ from datetime import date
 
 #! file
 #file = getenv('file')
+try:
+    file = sys.argv[1] 
+except:
+    file = '/home/snowden/Documents/expenses-pagesti-pdf/1034-2012.pdf'
 
-file = sys.argv[1] 
-content = read_pdf(file, pages='all')
-print(content)
 
 
+def get_ei():
+    content = read_pdf(file, lattice=True, pages='1')
+    cc = str(content).find(r'Columns')
+    ei = str(content)[cc+len('Columns:')+17:46]
+    return ei 
 
 # RETURN A DF object
 def clean_data_csv(F):
@@ -154,7 +160,6 @@ def ParseData(file=file):
 
     # print(f"{df_Four},\n----- END FOUR-----\n\n', {df_Date},\n----- END DATE-----\n\n', {df_Compte},\n----- END COMPTE -----\n\n', {df_Amount},\n-----END AMOUNT -----\n\n', {df_Tva} \n ------- END TVA -------- \n {df_Deduct}\n-----END DEDUCT ------------\n {df_Recup}")
 
-
     df['Date'] = df_Date
     df['Libellés'] = df_Conso 
     df['N° Fact'] = df_Compte
@@ -164,8 +169,10 @@ def ParseData(file=file):
     df['T.V.A.'] = df_Bill
 
     df.rename({'Libellés':'consumption','N° Fact':'bill_number','Montants':'amount','Récupérable':'vta','Déductible':'supplier','T.V.A.':'account'},inplace=True)
-    for line in df.values:
+    for index, line in enumerate(df.values):
         print(line)
+        print(index)
+        
     
 
     return df.to_csv(file, header=False)
@@ -194,9 +201,11 @@ def extract():
     file_csv=f"{path}/temp/{foldername}/{File}.csv"
 
     try:
-        content = read_pdf(file, pages='all')
-        print(content)
-
+        ei = get_ei()
+        print(get_ei())
+        if File.find(r'{ei}') != -1: 
+            File = ei
+            convert_into(file, f'{path}/temp/{foldername}/{File}.csv',output_format='csv', pages='all')    
         convert_into(file, f'{path}/temp/{foldername}/{File}.csv',output_format='csv', pages='all')
         #ParseData(file="/home/snowden/Programmation/Pagesti-Stage/tabula_exe/temp/04062020201926/1120-2012.csv")
                 
