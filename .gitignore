@@ -6,3 +6,4 @@ __pycache__
 tests.py
 data.json
 requirements.txt
+temp/
